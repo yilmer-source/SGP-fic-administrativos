@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Docentes</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- Sidebar -->
+
+    <div class="col-md-2 sidebar">
+
+        <div class="text-center mt-3">
+
+            <img
+                src="assets/logo-unicauca.png"
+                alt="Universidad del Cauca"
+                class="logo-unicauca">
+
+            <h5 class="text-white mt-2">SGP</h5>
+
+            <p class="text-white small">Gestión de Pasantías</p>
+
+            <p class="text-white small">Ingeniería Civil</p>
+
+            <p class="text-white small">Universidad del Cauca</p>
+
+        </div>
+
+        <hr>
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="empresas.html">Empresas</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="convocatorias.html">Convocatorias</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="estudiantes.html">Estudiantes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="docente.html">Docentes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Contenido -->
+
+    <div class="col-md-10 p-4">
+
+        <div class="usuario-bar">
+
+            <div class="usuario-info">
+                <strong>Usuario:</strong>
+                Sebastián Castillo
+            </div>
+
+            <a href="login.html" class="btn-cerrar">
+                Cerrar Sesión
+            </a>
+
+        </div>
+
+        <h2>Gestión de Docentes</h2>
+
+        <p>Docentes tutores del programa de prácticas.</p>
+
+        <div class="card">
+
+            <div class="card-header">
+                Docentes Registrados
+            </div>
+
+            <div class="card-body">
+
+                <!-- Pestañas: cada una filtra por estado -->
+
+                <ul class="nav nav-tabs mb-4" id="tabsEstado">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-estado="">Todos</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Activo">Activos</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Inactivo">Inactivos</a>
+                    </li>
+
+                </ul>
+
+                <!-- Filtros -->
+
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <input
+                            type="text"
+                            id="buscadorDocentes"
+                            class="form-control"
+                            placeholder="Buscar por nombre, código, correo o cargo...">
+                    </div>
+
+                    <div class="col-md-4">
+                        <select class="form-select" id="filtroEstado">
+                            <option value="">Todos los estados</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button
+                            type="button"
+                            id="btnLimpiar"
+                            class="btn btn-outline-secondary w-100">
+                            Limpiar
+                        </button>
+                    </div>
+
+                </div>
+
+                <p class="text-muted small mb-3" id="contador"></p>
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Código</th>
+                            <th>Correo</th>
+                            <th>Cargo</th>
+                            <th>N° Estudiantes</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaDocentes"></tbody>
+
+                </table>
+
+                <p class="text-center text-muted my-4" id="sinResultados" style="display:none;">
+                    No hay docentes que coincidan con los filtros.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script src="js/datos.js"></script>
+
+<script>
+
+// Si js/datos.js no está en la carpeta js, se avisa en pantalla en vez de quedar vacío
+if (typeof DOCENTES === "undefined") {
+    const aviso = document.getElementById("sinResultados");
+    aviso.textContent = "No se pudo cargar js/datos.js. Verifica que el archivo exista dentro de la carpeta js.";
+    aviso.style.display = "block";
+    throw new Error("js/datos.js no se cargó");
+}
+
+const tbody = document.getElementById("tablaDocentes");
+
+function crearCelda(texto, clase){
+    const td = document.createElement("td");
+    td.textContent = texto;
+    if (clase) td.className = clase;
+    return td;
+}
+
+// Las filas se arman desde js/datos.js (una sola fuente de datos)
+DOCENTES.forEach(function(d){
+
+    const tr = document.createElement("tr");
+    tr.dataset.estado = d.estado;
+
+    tr.appendChild(crearCelda(d.nombre, "nombre-docente"));
+    tr.appendChild(crearCelda(d.codigo, "codigo-docente"));
+    tr.appendChild(crearCelda(d.correo, "correo-docente"));
+    tr.appendChild(crearCelda(d.cargo, "cargo-docente"));
+    tr.appendChild(crearCelda(estudiantesDeDocente(d.id).length));
+
+    const tdEstado = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = CLASE_ESTADO_DOCENTE[d.estado] || "badge bg-secondary";
+    badge.textContent = d.estado;
+    tdEstado.appendChild(badge);
+    tr.appendChild(tdEstado);
+
+    const tdAccion = document.createElement("td");
+    const enlace = document.createElement("a");
+    enlace.href = "detalle-docente.html?id=" + encodeURIComponent(d.id);
+    enlace.className = "btn btn-primary";
+    enlace.textContent = "Ver expediente";
+    tdAccion.appendChild(enlace);
+    tr.appendChild(tdAccion);
+
+    tbody.appendChild(tr);
+});
+
+const buscador      = document.getElementById("buscadorDocentes");
+const selectEstado  = document.getElementById("filtroEstado");
+const btnLimpiar    = document.getElementById("btnLimpiar");
+const tabs          = document.querySelectorAll("#tabsEstado .nav-link");
+const filas         = tbody.querySelectorAll("tr[data-estado]");
+const sinResultados = document.getElementById("sinResultados");
+const contador      = document.getElementById("contador");
+
+// Minúsculas y sin tildes, para que "ramirez" encuentre "Ramírez"
+function normalizar(texto){
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+function marcarPestana(estado){
+    tabs.forEach(function(tab){
+        tab.classList.toggle("active", tab.dataset.estado === estado);
+    });
+}
+
+function filtrar(){
+
+    const texto  = normalizar(buscador.value);
+    const estado = selectEstado.value;
+
+    let visibles = 0;
+
+    filas.forEach(function(fila){
+
+        const contenido = normalizar(
+            fila.querySelector(".nombre-docente").textContent + " " +
+            fila.querySelector(".codigo-docente").textContent + " " +
+            fila.querySelector(".correo-docente").textContent + " " +
+            fila.querySelector(".cargo-docente").textContent
+        );
+
+        const coincideTexto  = texto === "" || contenido.includes(texto);
+        const coincideEstado = estado === "" || fila.dataset.estado === estado;
+
+        const mostrar = coincideTexto && coincideEstado;
+
+        fila.style.display = mostrar ? "" : "none";
+
+        if (mostrar) visibles++;
+    });
+
+    sinResultados.style.display = visibles === 0 ? "block" : "none";
+    contador.textContent = "Mostrando " + visibles + " de " + filas.length + " docentes";
+}
+
+// Pestañas: cambian el estado y mantienen sincronizado el select
+tabs.forEach(function(tab){
+    tab.addEventListener("click", function(e){
+        e.preventDefault();
+        selectEstado.value = tab.dataset.estado;
+        marcarPestana(tab.dataset.estado);
+        filtrar();
+    });
+});
+
+// Select: cambia el estado y mantiene sincronizada la pestaña
+selectEstado.addEventListener("change", function(){
+    marcarPestana(selectEstado.value);
+    filtrar();
+});
+
+buscador.addEventListener("input", filtrar);
+
+btnLimpiar.addEventListener("click", function(){
+    buscador.value = "";
+    selectEstado.value = "";
+    marcarPestana("");
+    filtrar();
+});
+
+filtrar();
+
+</script>
+
+</body>
+
+</html>

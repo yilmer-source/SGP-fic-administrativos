@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expediente Empresa</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- Sidebar -->
+
+    <div class="col-md-2 sidebar">
+
+        <div class="text-center mt-3">
+
+            <img
+                src="assets/logo-unicauca.png"
+                alt="Universidad del Cauca"
+                class="logo-unicauca">
+
+            <h5 class="text-white mt-2">SGP</h5>
+
+            <p class="text-white small">Gestión de Pasantías</p>
+
+            <p class="text-white small">Ingeniería Civil</p>
+
+            <p class="text-white small">Universidad del Cauca</p>
+
+        </div>
+
+        <hr>
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="empresas.html">Empresas</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="convocatorias.html">Convocatorias</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="estudiantes.html">Estudiantes</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="docente.html">
+                        Docentes
+                    </a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Contenido -->
+
+    <div class="col-md-10 p-4">
+
+        <div class="usuario-bar">
+
+            <div class="usuario-info">
+                <strong>Usuario:</strong>
+                Sebastián Castillo
+            </div>
+
+            <a href="login.html" class="btn-cerrar">
+                Cerrar Sesión
+            </a>
+
+        </div>
+
+        <!-- Si el id no existe, se muestra este aviso -->
+
+        <div id="noEncontrada" style="display:none;">
+
+            <h2>Empresa no encontrada</h2>
+
+            <p>No existe una empresa con ese identificador.</p>
+
+            <a href="empresas.html" class="btn btn-primary">
+                Volver a Empresas
+            </a>
+
+        </div>
+
+        <!-- Expediente: se llena desde JavaScript -->
+
+        <div id="expediente" style="display:none;">
+
+            <h2 class="mt-2" id="nombreEmpresa"></h2>
+
+            <p>Expediente de validación empresarial</p>
+
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+                    <div class="card indicador h-100">
+                        <div class="card-body">
+                            <h6>Estado</h6>
+                            <span class="badge" id="badgeEstado"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card indicador h-100">
+                        <div class="card-body" id="tarjetaPlazo"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card indicador h-100">
+                        <div class="card-body">
+                            <h6>Programa</h6>
+                            <h6 id="programaEmpresa"></h6>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Estado del Proceso</div>
+                <div class="card-body">
+                    <div class="row text-center" id="procesoEmpresa"></div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Información General</div>
+                <div class="card-body">
+                    <p><strong>NIT:</strong> <span id="nitEmpresa"></span></p>
+                    <p><strong>Representante:</strong> <span id="representanteEmpresa"></span></p>
+                    <p><strong>Correo:</strong> <span id="correoEmpresa"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="telefonoEmpresa"></span></p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Lista de Chequeo</div>
+                <div class="card-body">
+                    <div class="list-group" id="listaChequeo"></div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Documentos Cargados</div>
+                <div class="card-body">
+                    <ul id="listaDocumentos"></ul>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Observaciones</div>
+                <div class="card-body">
+                    <textarea class="form-control" rows="4" id="observacionesEmpresa"></textarea>
+                </div>
+            </div>
+
+            <div class="card mb-3" id="tarjetaCorreccion" style="display:none;">
+                <div class="card-header">Seguimiento de Corrección</div>
+                <div class="card-body">
+                    <p>
+                        Estado actual:
+                        <span class="badge bg-danger">Corrección requerida</span>
+                    </p>
+                    <p>
+                        Fecha límite para corrección:
+                        <span id="fechaLimiteCorreccion"></span>
+                    </p>
+                    <p>
+                        Días hábiles restantes:
+                        <span id="diasCorreccion"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">Historial</div>
+                <div class="card-body" id="historialEmpresa"></div>
+            </div>
+
+            <div class="mt-3" id="botonesAccion"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- Cuadro para Solicitar Corrección / Rechazar (la observación es obligatoria) -->
+
+<div class="modal fade" id="modalDecision" tabindex="-1" aria-labelledby="tituloModalDecision" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloModalDecision"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <label for="motivoDecision" class="form-label" id="etiquetaModalDecision"></label>
+
+                <textarea
+                    id="motivoDecision"
+                    class="form-control"
+                    rows="4"></textarea>
+
+                <div class="invalid-feedback" id="errorModalDecision"></div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarDecision"></button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Datos de las empresas (de ejemplo). El id debe coincidir con el
+// que se envía desde empresas.html: detalle-empresa.html?id=1
+//
+// estado: "Pendiente" | "Corrección" | "Aprobada" | "Rechazada"
+// diasRestantes y fechaLimite solo se usan en Pendiente y Corrección.
+// resolucion solo se usa en Aprobada y Rechazada.
+//
+// Las empresas que se registran por enlace no están aquí: se leen de
+// localStorage ("registros_empresas") con empresaDesdeRegistro(), más abajo.
+
+const EMPRESAS = [
+
+    {
+        id: 1,
+        nombre: "Constructora Andina S.A.S.",
+        nit: "900123456-7",
+        programa: "Ingeniería Civil",
+        estado: "Pendiente",
+        diasRestantes: 8,
+        fechaLimite: "22/11/2026",
+        representante: "Carlos Gómez",
+        correo: "contacto@constructoraandina.com",
+        telefono: "3124567890",
+        checklist: [
+            { nombre: "RUT", ok: true },
+            { nombre: "Cámara de Comercio", ok: true },
+            { nombre: "Representación Legal", ok: true },
+            { nombre: "Supervisor Registrado", ok: true },
+            { nombre: "Certificado SST", ok: false }
+        ],
+        documentos: [
+            "RUT.pdf",
+            "Camara_Comercio.pdf",
+            "Representacion_Legal.pdf"
+        ],
+        observaciones: "Falta adjuntar el certificado SST actualizado solicitado por la coordinación.",
+        historial: [
+            "10/11/2026 - Empresa registrada.",
+            "11/11/2026 - Documentos cargados.",
+            "12/11/2026 - Revisión iniciada."
+        ]
+    },
+
+    {
+        id: 2,
+        nombre: "Vías del Cauca S.A.S.",
+        nit: "900765432-1",
+        programa: "Ingeniería Civil",
+        estado: "Corrección",
+        diasRestantes: 5,
+        fechaLimite: "20/11/2026",
+        representante: "Andrea Salazar",
+        correo: "contacto@viasdelcauca.com",
+        telefono: "3101234567",
+        checklist: [
+            { nombre: "RUT", ok: true },
+            { nombre: "Cámara de Comercio", ok: true },
+            { nombre: "Representación Legal", ok: false },
+            { nombre: "Supervisor Registrado", ok: true },
+            { nombre: "Certificado SST", ok: true }
+        ],
+        documentos: [
+            "RUT.pdf",
+            "Camara_Comercio.pdf",
+            "Representacion_Legal.pdf",
+            "Certificado_SST.pdf"
+        ],
+        observaciones: "El certificado de representación legal está vencido. Debe adjuntarse uno con vigencia no mayor a 30 días.",
+        historial: [
+            "05/11/2026 - Empresa registrada.",
+            "06/11/2026 - Documentos cargados.",
+            "09/11/2026 - Revisión iniciada.",
+            "10/11/2026 - Corrección solicitada a la empresa."
+        ]
+    },
+
+    {
+        id: 3,
+        nombre: "Ingeniería y Obras del Sur S.A.S.",
+        nit: "901234567-8",
+        programa: "Ingeniería Civil",
+        estado: "Aprobada",
+        resolucion: "Aprobada el 26/10/2026",
+        representante: "Julián Restrepo",
+        correo: "contacto@ingenieriaobrassur.com",
+        telefono: "3205551234",
+        checklist: [
+            { nombre: "RUT", ok: true },
+            { nombre: "Cámara de Comercio", ok: true },
+            { nombre: "Representación Legal", ok: true },
+            { nombre: "Supervisor Registrado", ok: true },
+            { nombre: "Certificado SST", ok: true }
+        ],
+        documentos: [
+            "RUT.pdf",
+            "Camara_Comercio.pdf",
+            "Representacion_Legal.pdf",
+            "Supervisor.pdf",
+            "Certificado_SST.pdf"
+        ],
+        observaciones: "Documentación completa. La empresa cumple con todos los requisitos.",
+        historial: [
+            "20/10/2026 - Empresa registrada.",
+            "21/10/2026 - Documentos cargados.",
+            "23/10/2026 - Revisión iniciada.",
+            "26/10/2026 - Empresa aprobada."
+        ]
+    },
+
+    {
+        id: 4,
+        nombre: "Cementos Pacífico S.A.",
+        nit: "800456789-2",
+        programa: "Ingeniería Civil",
+        estado: "Rechazada",
+        resolucion: "Rechazada el 29/10/2026",
+        representante: "Luis Fernando Mora",
+        correo: "contacto@cementospacifico.com",
+        telefono: "3157778899",
+        checklist: [
+            { nombre: "RUT", ok: true },
+            { nombre: "Cámara de Comercio", ok: true },
+            { nombre: "Representación Legal", ok: true },
+            { nombre: "Supervisor Registrado", ok: false },
+            { nombre: "Certificado SST", ok: false }
+        ],
+        documentos: [
+            "RUT.pdf",
+            "Camara_Comercio.pdf",
+            "Representacion_Legal.pdf"
+        ],
+        observaciones: "No se registró supervisor ni se adjuntó el certificado SST dentro del plazo de corrección.",
+        historial: [
+            "15/10/2026 - Empresa registrada.",
+            "16/10/2026 - Documentos cargados.",
+            "18/10/2026 - Revisión iniciada.",
+            "22/10/2026 - Corrección solicitada a la empresa.",
+            "29/10/2026 - Empresa rechazada por no responder en el plazo."
+        ]
+    }
+
+];
+
+</script>
+
+<script>
+
+// Qué cambia según el estado de la empresa:
+//  - texto y color de la etiqueta
+//  - los 5 pasos del proceso (ok, actual, pendiente, error)
+//  - los botones de acción
+const CONFIG_ESTADO = {
+
+    "Pendiente": {
+        badge: "bg-warning text-dark",
+        etiqueta: "Pendiente de Revisión",
+        pasos: ["ok", "ok", "actual", "pendiente", "pendiente"],
+        botones: [
+            { texto: "Aprobar Empresa", clase: "btn-success", accion: "aprobar" },
+            { texto: "Solicitar Corrección", clase: "btn-danger", accion: "correccion" }
+        ]
+    },
+
+    "Corrección": {
+        badge: "bg-danger",
+        etiqueta: "Corrección requerida",
+        pasos: ["ok", "ok", "ok", "actual", "pendiente"],
+        botones: [
+            { texto: "Aprobar Empresa", clase: "btn-success", accion: "aprobar" },
+            { texto: "Rechazar Empresa", clase: "btn-outline-danger", accion: "rechazar" }
+        ]
+    },
+
+    "Aprobada": {
+        badge: "bg-success",
+        etiqueta: "Aprobada",
+        pasos: ["ok", "ok", "ok", "ok", "ok"],
+        botones: []
+    },
+
+    "Rechazada": {
+        badge: "bg-secondary",
+        etiqueta: "Rechazada",
+        pasos: ["ok", "ok", "ok", "pendiente", "error"],
+        botones: []
+    }
+
+};
+
+const ICONOS_PASO = {
+    ok: "✅",
+    actual: "🟡",
+    pendiente: "⬜",
+    error: "❌"
+};
+
+const NOMBRES_PASO = ["Registro", "Documentos", "Revisión", "Corrección", "Aprobación"];
+
+// Evita que un texto con símbolos rompa el HTML
+function esc(texto){
+    const div = document.createElement("div");
+    div.textContent = texto;
+    return div.innerHTML;
+}
+
+function mostrarEmpresa(empresa){
+
+    const config = CONFIG_ESTADO[empresa.estado];
+
+    document.title = "Expediente - " + empresa.nombre;
+
+    // Encabezado
+    document.getElementById("nombreEmpresa").textContent = empresa.nombre;
+    document.getElementById("programaEmpresa").textContent = empresa.programa;
+
+    const badge = document.getElementById("badgeEstado");
+    badge.className = "badge " + config.badge;
+    badge.textContent = config.etiqueta;
+
+    // Tarjeta del plazo: días restantes o resolución
+    const tarjetaPlazo = document.getElementById("tarjetaPlazo");
+
+    if (empresa.estado === "Pendiente" || empresa.estado === "Corrección") {
+        tarjetaPlazo.innerHTML =
+            "<h6>Días restantes</h6>" +
+            "<h3>" + esc(String(empresa.diasRestantes)) + "</h3>" +
+            '<p class="text-danger mb-0">Vence en ' +
+            esc(String(empresa.diasRestantes)) + " días hábiles</p>";
+    } else {
+        tarjetaPlazo.innerHTML =
+            "<h6>Resolución</h6>" +
+            "<h6>" + esc(empresa.resolucion) + "</h6>";
+    }
+
+    // Estado del proceso
+    document.getElementById("procesoEmpresa").innerHTML =
+        config.pasos.map(function(paso, i){
+            return '<div class="col">' + ICONOS_PASO[paso] + "<br>" +
+                   NOMBRES_PASO[i] + "</div>";
+        }).join("");
+
+    // Información general
+    document.getElementById("nitEmpresa").textContent = empresa.nit;
+    document.getElementById("representanteEmpresa").textContent = empresa.representante;
+    document.getElementById("correoEmpresa").textContent = empresa.correo;
+    document.getElementById("telefonoEmpresa").textContent = empresa.telefono;
+
+    // Lista de chequeo
+    document.getElementById("listaChequeo").innerHTML =
+        empresa.checklist.map(function(item){
+            return item.ok
+                ? '<div class="list-group-item">✅ ' + esc(item.nombre) + "</div>"
+                : '<div class="list-group-item text-danger">❌ ' + esc(item.nombre) + "</div>";
+        }).join("");
+
+    // Documentos
+    document.getElementById("listaDocumentos").innerHTML =
+        empresa.documentos.map(function(doc){
+            return "<li>" + esc(doc) + "</li>";
+        }).join("");
+
+    // Observaciones
+    // Editable solo mientras la empresa sigue en revisión
+    const cajaObservaciones = document.getElementById("observacionesEmpresa");
+    cajaObservaciones.value = empresa.observaciones;
+    cajaObservaciones.readOnly = !(empresa.estado === "Pendiente" || empresa.estado === "Corrección");
+
+    // Seguimiento de corrección: solo cuando la empresa está en corrección
+    const tarjetaCorreccion = document.getElementById("tarjetaCorreccion");
+
+    if (empresa.estado === "Corrección") {
+        document.getElementById("fechaLimiteCorreccion").textContent = empresa.fechaLimite;
+        document.getElementById("diasCorreccion").textContent = empresa.diasRestantes;
+        tarjetaCorreccion.style.display = "block";
+    } else {
+        tarjetaCorreccion.style.display = "none";
+    }
+
+    // Historial
+    document.getElementById("historialEmpresa").innerHTML =
+        empresa.historial.map(function(evento){
+            return "<p>" + esc(evento) + "</p>";
+        }).join("");
+
+    // Botones de acción según el estado
+    document.getElementById("botonesAccion").innerHTML =
+        config.botones.map(function(boton){
+            return '<button type="button" class="btn ' + boton.clase + ' me-2" data-accion="' +
+                   boton.accion + '">' + esc(boton.texto) + "</button>";
+        }).join("");
+
+    document.getElementById("expediente").style.display = "block";
+}
+
+// ---------------------------------------------------------------
+// Empresas registradas por enlace (subir-documentos.html las guarda
+// en localStorage con clave "registros_empresas"; el id es el token)
+// ---------------------------------------------------------------
+
+function pad(n){
+    return String(n).padStart(2, "0");
+}
+
+function fechaCorta(fecha){
+    return pad(fecha.getDate()) + "/" + pad(fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+}
+
+function empresaDesdeRegistro(token){
+
+    if (!token) return null;
+
+    let registros = [];
+
+    try {
+        registros = JSON.parse(localStorage.getItem("registros_empresas")) || [];
+    } catch (e) {
+        return null;
+    }
+
+    const reg = registros.find(function(r){ return r.token === token; });
+
+    if (!reg) return null;
+
+    const datos = reg.empresa || {};
+
+    let fecha = new Date(reg.fecha);
+    if (isNaN(fecha.getTime())) fecha = new Date();
+
+    // 10 días desde el registro (igual que en la lista de Empresas)
+    const transcurridos = Math.floor((Date.now() - fecha.getTime()) / 86400000);
+    const dias = Math.max(0, 10 - transcurridos);
+    const limite = new Date(fecha.getTime() + 10 * 86400000);
+
+    const supervisor = reg.supervisor && reg.supervisor.nombre
+        ? "Supervisor Registrado (" + reg.supervisor.nombre + ")"
+        : "Supervisor Registrado";
+
+    return {
+        id: token,
+        nombre: datos.nombre || "Empresa sin nombre",
+        nit: datos.nit || "—",
+        programa: "Ingeniería Civil",
+        estado: "Pendiente",
+        diasRestantes: dias,
+        fechaLimite: fechaCorta(limite),
+        representante: datos.representante || "—",
+        correo: datos.correo || "—",
+        telefono: datos.telefono || "—",
+        // El formulario no deja enviar si falta alguno de los 5 documentos
+        checklist: [
+            { nombre: "Cámara de Comercio o RUT", ok: true },
+            { nombre: "Representación Legal", ok: true },
+            { nombre: supervisor, ok: true },
+            { nombre: "Compromiso de afiliación ARL", ok: true },
+            { nombre: "Certificado SST", ok: true }
+        ],
+        documentos: (reg.documentos || []).map(function(d){
+            return d.archivo;
+        }),
+        observaciones: "",
+        historial: [
+            fechaCorta(fecha) + " - Empresa registrada mediante enlace.",
+            fechaCorta(fecha) + " - Documentos cargados."
+        ]
+    };
+}
+
+// Lee el id de la URL: detalle-empresa.html?id=2  (o ?id=<token> si se registró por enlace)
+const parametroId = new URLSearchParams(window.location.search).get("id");
+
+// ---------------------------------------------------------------
+// Decisiones del coordinador (simulación con localStorage)
+// Se guardan con la clave empresa_<id> y las lee empresas.html
+// ---------------------------------------------------------------
+
+const CLAVE_EMPRESA = "empresa_" + parametroId;
+
+function leerDecision(){
+    try {
+        return JSON.parse(localStorage.getItem(CLAVE_EMPRESA));
+    } catch (e) {
+        return null;
+    }
+}
+
+// Suma días hábiles (sin sábados ni domingos)
+function sumarDiasHabiles(fecha, cantidad){
+    const d = new Date(fecha);
+    let sumados = 0;
+    while (sumados < cantidad) {
+        d.setDate(d.getDate() + 1);
+        const dia = d.getDay();
+        if (dia !== 0 && dia !== 6) sumados++;
+    }
+    return d;
+}
+
+// Días hábiles que faltan desde hoy hasta la fecha límite
+function habilesRestantes(limite){
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    const fin = new Date(limite);
+    fin.setHours(0, 0, 0, 0);
+    let cuenta = 0;
+    while (d < fin) {
+        d.setDate(d.getDate() + 1);
+        const dia = d.getDay();
+        if (dia !== 0 && dia !== 6) cuenta++;
+    }
+    return cuenta;
+}
+
+// Empresa tal como se muestra: datos base + lo decidido por el coordinador
+function construirVista(){
+
+    const base =
+        EMPRESAS.find(function(e){ return String(e.id) === parametroId; }) ||
+        empresaDesdeRegistro(parametroId);
+
+    if (!base) return null;
+
+    const vista = JSON.parse(JSON.stringify(base));
+    const guardado = leerDecision();
+
+    if (guardado && CONFIG_ESTADO[guardado.estado]) {
+
+        vista.estado = guardado.estado;
+        vista.observaciones = guardado.observacion || "";
+        vista.historial = vista.historial.concat(guardado.eventos || []);
+
+        if (guardado.estado === "Corrección") {
+            const limite = new Date(guardado.limite);
+            vista.fechaLimite = fechaCorta(limite);
+            vista.diasRestantes = habilesRestantes(limite);
+        } else {
+            vista.resolucion = guardado.estado + " el " + fechaCorta(new Date(guardado.fecha));
+        }
+    }
+
+    return vista;
+}
+
+const EVENTO_DECISION = {
+    "Aprobada":   " - Empresa aprobada.",
+    "Corrección": " - Corrección solicitada a la empresa.",
+    "Rechazada":  " - Empresa rechazada."
+};
+
+function decidir(estado, observacion){
+
+    const previo = leerDecision() || { eventos: [] };
+    const ahora = new Date();
+
+    const registro = {
+        estado: estado,
+        observacion: observacion,
+        fecha: ahora.toISOString(),
+        eventos: (previo.eventos || []).concat([fechaCorta(ahora) + EVENTO_DECISION[estado]])
+    };
+
+    // La empresa tiene 5 días hábiles para corregir
+    if (estado === "Corrección") {
+        registro.limite = sumarDiasHabiles(ahora, 5).toISOString();
+    }
+
+    try {
+        localStorage.setItem(CLAVE_EMPRESA, JSON.stringify(registro));
+    } catch (e) {}
+
+    mostrarEmpresa(construirVista());
+}
+
+// Textos del cuadro según la acción
+const TEXTOS_MODAL = {
+    "Corrección": {
+        titulo: "Solicitar corrección",
+        etiqueta: "¿Qué debe corregir la empresa? *",
+        error: "Debes indicar qué debe corregir la empresa.",
+        boton: "Enviar solicitud",
+        clase: "btn btn-danger"
+    },
+    "Rechazada": {
+        titulo: "Rechazar empresa",
+        etiqueta: "¿Por qué se rechaza esta empresa? *",
+        error: "Debes escribir el motivo del rechazo.",
+        boton: "Confirmar rechazo",
+        clase: "btn btn-dark"
+    }
+};
+
+const elementoModal  = document.getElementById("modalDecision");
+const cajaMotivo     = document.getElementById("motivoDecision");
+const botonConfirmar = document.getElementById("btnConfirmarDecision");
+let estadoDelModal   = null;
+
+function abrirModal(estado){
+
+    const t = TEXTOS_MODAL[estado];
+
+    estadoDelModal = estado;
+
+    document.getElementById("tituloModalDecision").textContent   = t.titulo;
+    document.getElementById("etiquetaModalDecision").textContent = t.etiqueta;
+    document.getElementById("errorModalDecision").textContent    = t.error;
+
+    botonConfirmar.textContent = t.boton;
+    botonConfirmar.className   = t.clase;
+
+    bootstrap.Modal.getOrCreateInstance(elementoModal).show();
+}
+
+// Los botones se dibujan desde JavaScript, por eso se escucha en el contenedor
+document.getElementById("botonesAccion").addEventListener("click", function(e){
+
+    const boton = e.target.closest("[data-accion]");
+
+    if (!boton) return;
+
+    const accion = boton.dataset.accion;
+
+    if (accion === "aprobar") {
+        if (window.confirm("¿Aprobar esta empresa?")) {
+            decidir("Aprobada", document.getElementById("observacionesEmpresa").value.trim());
+        }
+        return;
+    }
+
+    abrirModal(accion === "correccion" ? "Corrección" : "Rechazada");
+});
+
+// En Solicitar corrección y en Rechazar la observación es obligatoria
+botonConfirmar.addEventListener("click", function(){
+
+    const texto = cajaMotivo.value.trim();
+
+    if (texto === "") {
+        cajaMotivo.classList.add("is-invalid");
+        cajaMotivo.focus();
+        return;
+    }
+
+    cajaMotivo.classList.remove("is-invalid");
+
+    decidir(estadoDelModal, texto);
+
+    bootstrap.Modal.getInstance(elementoModal).hide();
+});
+
+cajaMotivo.addEventListener("input", function(){
+    if (cajaMotivo.value.trim() !== "") {
+        cajaMotivo.classList.remove("is-invalid");
+    }
+});
+
+// Al cerrar el cuadro se limpia para la próxima vez
+elementoModal.addEventListener("hidden.bs.modal", function(){
+    cajaMotivo.value = "";
+    cajaMotivo.classList.remove("is-invalid");
+});
+
+const empresaActual = construirVista();
+
+if (empresaActual) {
+    mostrarEmpresa(empresaActual);
+} else {
+    document.getElementById("noEncontrada").style.display = "block";
+}
+
+</script>
+
+</body>
+
+</html>

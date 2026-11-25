@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Empresas</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- Sidebar -->
+
+    <div class="col-md-2 sidebar">
+
+        <div class="text-center mt-3">
+
+            <img
+                src="assets/logo-unicauca.png"
+                alt="Universidad del Cauca"
+                class="logo-unicauca">
+
+            <h5 class="text-white mt-2">SGP</h5>
+
+            <p class="text-white small">Gestión de Pasantías</p>
+
+            <p class="text-white small">Ingeniería Civil</p>
+
+            <p class="text-white small">Universidad del Cauca</p>
+
+        </div>
+
+        <hr>
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="empresas.html">Empresas</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="convocatorias.html">Convocatorias</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="estudiantes.html">Estudiantes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="docente.html">Docentes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Contenido -->
+
+    <div class="col-md-10 p-4">
+
+        <div class="usuario-bar">
+
+            <div class="usuario-info">
+                <strong>Usuario:</strong>
+                Sebastián Castillo
+            </div>
+
+            <a href="login.html" class="btn-cerrar">
+                Cerrar Sesión
+            </a>
+
+        </div>
+
+        <!-- Título + botón de invitación -->
+
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+            <div>
+                <h2>Gestión de Empresas</h2>
+                <p>Empresas registradas para prácticas profesionales.</p>
+            </div>
+
+            <button id="btnInvitarEmpresa" type="button" class="btn btn-primary">
+                Enviar enlace de registro
+            </button>
+
+        </div>
+
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+                <div class="card indicador">
+                    <div class="card-body">
+                        <h6>Pendientes</h6>
+                        <h2 id="numPendientes">4</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card indicador">
+                    <div class="card-body">
+                        <h6>Corrección requerida</h6>
+                        <h2 id="numCorreccion">2</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card indicador">
+                    <div class="card-body">
+                        <h6>Aprobadas</h6>
+                        <h2 id="numAprobadas">11</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card indicador">
+                    <div class="card-body">
+                        <h6>Rechazadas</h6>
+                        <h2 id="numRechazadas">1</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-header">
+                Empresas Registradas
+            </div>
+
+            <div class="card-body">
+
+                <!-- Pestañas: cada una filtra por estado -->
+
+                <ul class="nav nav-tabs mb-4" id="tabsEstado">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-estado="">Todas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Pendiente">Pendientes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Corrección">Corrección</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Aprobada">Aprobadas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Rechazada">Rechazadas</a>
+                    </li>
+
+                </ul>
+
+                <!-- Filtros -->
+
+                <div class="row mb-3">
+
+                    <div class="col-md-5">
+                        <input
+                            type="text"
+                            id="buscadorEmpresas"
+                            class="form-control"
+                            placeholder="Buscar por nombre o NIT...">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroEstado">
+                            <option value="">Todos los estados</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Corrección">Corrección</option>
+                            <option value="Aprobada">Aprobada</option>
+                            <option value="Rechazada">Rechazada</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input
+                            type="date"
+                            id="filtroFecha"
+                            class="form-control"
+                            title="Fecha de registro">
+                    </div>
+
+                    <div class="col-md-2">
+                        <button
+                            type="button"
+                            id="btnLimpiar"
+                            class="btn btn-outline-secondary w-100">
+                            Limpiar
+                        </button>
+                    </div>
+
+                </div>
+
+                <p class="text-muted small mb-3" id="contador"></p>
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Programa</th>
+                            <th>Estado</th>
+                            <th>Registro</th>
+                            <th>Días restantes</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaEmpresas">
+
+                        <tr data-estado="Pendiente" data-fecha="2026-11-10" data-nit="900123456-7">
+                            <td>
+                                <span class="nombre-empresa">Constructora Andina</span>
+                                <div class="small text-muted">NIT 900123456-7</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                            <td>10/11/2026</td>
+                            <td>8</td>
+                            <td>
+                                <a href="detalle-empresa.html?id=1" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                        <tr data-estado="Corrección" data-fecha="2026-11-05" data-nit="900765432-1">
+                            <td>
+                                <span class="nombre-empresa">Vías del Cauca</span>
+                                <div class="small text-muted">NIT 900765432-1</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-danger">Corrección</span></td>
+                            <td>05/11/2026</td>
+                            <td>5</td>
+                            <td>
+                                <a href="detalle-empresa.html?id=2" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                        <tr data-estado="Aprobada" data-fecha="2026-10-20" data-nit="901234567-8">
+                            <td>
+                                <span class="nombre-empresa">Ingeniería y Obras del Sur</span>
+                                <div class="small text-muted">NIT 901234567-8</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-success">Aprobada</span></td>
+                            <td>20/10/2026</td>
+                            <td>—</td>
+                            <td>
+                                <a href="detalle-empresa.html?id=3" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                        <tr data-estado="Rechazada" data-fecha="2026-10-15" data-nit="800456789-2">
+                            <td>
+                                <span class="nombre-empresa">Cementos Pacífico</span>
+                                <div class="small text-muted">NIT 800456789-2</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-secondary">Rechazada</span></td>
+                            <td>15/10/2026</td>
+                            <td>—</td>
+                            <td>
+                                <a href="detalle-empresa.html?id=4" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <p class="text-center text-muted my-4" id="sinResultados" style="display:none;">
+                    No hay empresas que coincidan con los filtros.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+// ---------------------------------------------------------------
+// Empresas registradas por enlace (simulación con localStorage)
+// Se agregan a la tabla como "Pendiente" ANTES de armar los filtros,
+// para que pestañas, buscador y contador las incluyan.
+// ---------------------------------------------------------------
+
+function pad(n){
+    return String(n).padStart(2, "0");
+}
+
+function cargarRegistrosPorEnlace(){
+
+    const tbody = document.getElementById("tablaEmpresas");
+    let registros = [];
+
+    try {
+        registros = JSON.parse(localStorage.getItem("registros_empresas")) || [];
+        if (!Array.isArray(registros)) registros = [];
+    } catch (e) {
+        registros = [];
+    }
+
+    let agregadas = 0;
+
+    registros.forEach(function(reg, i){
+
+        // Acepta varios nombres de campo por si el registro los guardó distinto
+        // subir-documentos.html guarda los datos dentro de reg.empresa y el identificador en reg.token
+        const datos  = (reg.empresa && typeof reg.empresa === "object") ? reg.empresa : reg;
+        const nombre = datos.nombre || datos.razonSocial || datos.razon_social || "Empresa sin nombre";
+        const nit    = datos.nit || datos.NIT || "";
+        const id     = reg.token || reg.id || ("reg" + (i + 1));
+
+        let fecha = new Date(reg.fecha || reg.fechaRegistro || reg.creado || Date.now());
+        if (isNaN(fecha.getTime())) fecha = new Date();
+
+        const fechaISO = fecha.getFullYear() + "-" + pad(fecha.getMonth() + 1) + "-" + pad(fecha.getDate());
+        const fechaTxt = pad(fecha.getDate()) + "/" + pad(fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
+        const tr = document.createElement("tr");
+        tr.dataset.estado = "Pendiente";
+        tr.dataset.fecha  = fechaISO;
+        tr.dataset.nit    = nit;
+
+        // Celda empresa (textContent evita inyectar HTML desde lo que escribió la empresa)
+        const tdEmpresa = document.createElement("td");
+        const spanNombre = document.createElement("span");
+        spanNombre.className = "nombre-empresa";
+        spanNombre.textContent = nombre;
+        const divNit = document.createElement("div");
+        divNit.className = "small text-muted";
+        divNit.textContent = "NIT " + nit;
+        tdEmpresa.appendChild(spanNombre);
+        tdEmpresa.appendChild(divNit);
+
+        const tdPrograma = document.createElement("td");
+        tdPrograma.textContent = "Ingeniería Civil";
+
+        const tdEstado = document.createElement("td");
+        const badge = document.createElement("span");
+        badge.className = "badge bg-warning text-dark";
+        badge.textContent = "Pendiente";
+        tdEstado.appendChild(badge);
+
+        const tdFecha = document.createElement("td");
+        tdFecha.textContent = fechaTxt;
+
+        const tdDias = document.createElement("td");
+        // 10 días desde el registro, para que coincida con el expediente
+        const transcurridos = Math.floor((Date.now() - fecha.getTime()) / 86400000);
+        tdDias.textContent = Math.max(0, 10 - transcurridos);
+
+        const tdAccion = document.createElement("td");
+        const enlace = document.createElement("a");
+        enlace.href = "detalle-empresa.html?id=" + encodeURIComponent(id);
+        enlace.className = "btn btn-primary";
+        enlace.textContent = "Ver expediente";
+        tdAccion.appendChild(enlace);
+
+        tr.appendChild(tdEmpresa);
+        tr.appendChild(tdPrograma);
+        tr.appendChild(tdEstado);
+        tr.appendChild(tdFecha);
+        tr.appendChild(tdDias);
+        tr.appendChild(tdAccion);
+
+        // Las más recientes arriba
+        tbody.insertBefore(tr, tbody.firstChild);
+
+        agregadas++;
+    });
+
+    // Suma las registradas al indicador de Pendientes
+    if (agregadas > 0) {
+        const num = document.getElementById("numPendientes");
+        num.textContent = (parseInt(num.textContent, 10) || 0) + agregadas;
+    }
+}
+
+cargarRegistrosPorEnlace();
+
+// ---------------------------------------------------------------
+// Pestañas, buscador y filtros
+// ---------------------------------------------------------------
+
+const buscador      = document.getElementById("buscadorEmpresas");
+const selectEstado  = document.getElementById("filtroEstado");
+const inputFecha    = document.getElementById("filtroFecha");
+const btnLimpiar    = document.getElementById("btnLimpiar");
+const tabs          = document.querySelectorAll("#tabsEstado .nav-link");
+const filas         = document.querySelectorAll("#tablaEmpresas tr[data-estado]");
+const sinResultados = document.getElementById("sinResultados");
+const contador      = document.getElementById("contador");
+
+// Minúsculas y sin tildes, para que "vias" encuentre "Vías"
+function normalizar(texto){
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+function marcarPestana(estado){
+    tabs.forEach(function(tab){
+        tab.classList.toggle("active", tab.dataset.estado === estado);
+    });
+}
+
+function filtrar(){
+
+    const texto   = normalizar(buscador.value);
+    const digitos = texto.replace(/\D/g, "");
+    const estado  = selectEstado.value;
+    const fecha   = inputFecha.value;
+
+    let visibles = 0;
+
+    filas.forEach(function(fila){
+
+        const nombre = normalizar(
+            fila.querySelector(".nombre-empresa").textContent
+        );
+        const nit = fila.dataset.nit;
+
+        const coincideTexto =
+            texto === "" ||
+            nombre.includes(texto) ||
+            nit.includes(texto) ||
+            (digitos !== "" && nit.replace(/\D/g, "").includes(digitos));
+
+        const coincideEstado = estado === "" || fila.dataset.estado === estado;
+        const coincideFecha  = fecha === ""  || fila.dataset.fecha === fecha;
+
+        const mostrar = coincideTexto && coincideEstado && coincideFecha;
+
+        fila.style.display = mostrar ? "" : "none";
+
+        if (mostrar) visibles++;
+    });
+
+    sinResultados.style.display = visibles === 0 ? "block" : "none";
+    contador.textContent = "Mostrando " + visibles + " de " + filas.length + " empresas";
+}
+
+// Pestañas: cambian el estado y mantienen sincronizado el select
+tabs.forEach(function(tab){
+    tab.addEventListener("click", function(e){
+        e.preventDefault();
+        selectEstado.value = tab.dataset.estado;
+        marcarPestana(tab.dataset.estado);
+        filtrar();
+    });
+});
+
+// Select: cambia el estado y mantiene sincronizada la pestaña
+selectEstado.addEventListener("change", function(){
+    marcarPestana(selectEstado.value);
+    filtrar();
+});
+
+buscador.addEventListener("input", filtrar);
+inputFecha.addEventListener("change", filtrar);
+
+btnLimpiar.addEventListener("click", function(){
+    buscador.value = "";
+    selectEstado.value = "";
+    inputFecha.value = "";
+    marcarPestana("");
+    filtrar();
+});
+
+// ---------------------------------------------------------------
+// Estado según lo decidido en detalle-empresa.html
+// (la decisión se guarda en localStorage con la clave empresa_<id>)
+// ---------------------------------------------------------------
+
+const CLASE_BADGE_EMPRESA = {
+    "Pendiente":  "badge bg-warning text-dark",
+    "Corrección": "badge bg-danger",
+    "Aprobada":   "badge bg-success",
+    "Rechazada":  "badge bg-secondary"
+};
+
+const ID_CONTADOR = {
+    "Pendiente":  "numPendientes",
+    "Corrección": "numCorreccion",
+    "Aprobada":   "numAprobadas",
+    "Rechazada":  "numRechazadas"
+};
+
+// Días hábiles que faltan desde hoy hasta la fecha límite
+function habilesRestantes(limite){
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    const fin = new Date(limite);
+    fin.setHours(0, 0, 0, 0);
+    let cuenta = 0;
+    while (d < fin) {
+        d.setDate(d.getDate() + 1);
+        const dia = d.getDay();
+        if (dia !== 0 && dia !== 6) cuenta++;
+    }
+    return cuenta;
+}
+
+// El id de cada fila sale del enlace "Ver expediente" (?id=...)
+function idDeFila(fila){
+    try {
+        return new URL(fila.querySelector("a.btn").href).searchParams.get("id");
+    } catch (e) {
+        return null;
+    }
+}
+
+function leerDecisionEmpresa(id){
+    try {
+        return JSON.parse(localStorage.getItem("empresa_" + id));
+    } catch (e) {
+        return null;
+    }
+}
+
+function aplicarEstadosGuardados(){
+
+    // Cantidades de partida (las de la página, ya con las registradas por enlace); se leen una sola vez
+    const cantidades = {};
+
+    Object.keys(ID_CONTADOR).forEach(function(estado){
+        const el = document.getElementById(ID_CONTADOR[estado]);
+        if (el.dataset.base === undefined) {
+            el.dataset.base = parseInt(el.textContent, 10) || 0;
+        }
+        cantidades[estado] = parseInt(el.dataset.base, 10);
+    });
+
+    filas.forEach(function(fila){
+
+        const celdaDias = fila.children[4];
+
+        if (fila.dataset.original === undefined) {
+            fila.dataset.original = fila.dataset.estado;
+            fila.dataset.diasOriginal = celdaDias.textContent;
+        }
+
+        const original = fila.dataset.original;
+        let estado = original;
+        let guardado = null;
+
+        // Solo cambian las que seguían en revisión
+        if (original === "Pendiente" || original === "Corrección") {
+            guardado = leerDecisionEmpresa(idDeFila(fila));
+            if (guardado && CLASE_BADGE_EMPRESA[guardado.estado]) {
+                estado = guardado.estado;
+            }
+        }
+
+        if (estado !== original) {
+            cantidades[original] = Math.max(0, cantidades[original] - 1);
+            cantidades[estado]   = cantidades[estado] + 1;
+        }
+
+        fila.dataset.estado = estado;
+
+        const badge = fila.querySelector(".badge");
+        badge.textContent = estado;
+        badge.className   = CLASE_BADGE_EMPRESA[estado];
+
+        // Días restantes: solo tienen sentido mientras la empresa sigue en revisión
+        if (estado === original) {
+            celdaDias.textContent = fila.dataset.diasOriginal;
+        } else if (estado === "Corrección") {
+            celdaDias.textContent = habilesRestantes(guardado.limite);
+        } else {
+            celdaDias.textContent = "—";
+        }
+    });
+
+    Object.keys(ID_CONTADOR).forEach(function(estado){
+        document.getElementById(ID_CONTADOR[estado]).textContent = cantidades[estado];
+    });
+}
+
+aplicarEstadosGuardados();
+filtrar();
+
+// Si el usuario vuelve con el botón "atrás", se vuelve a leer el estado guardado
+window.addEventListener("pageshow", function(e){
+    if (e.persisted) {
+        aplicarEstadosGuardados();
+        filtrar();
+    }
+});
+
+</script>
+
+<!-- Botón "Enviar enlace de registro" -->
+<script src="js/enviar-enlace.js"></script>
+
+</body>
+
+</html>

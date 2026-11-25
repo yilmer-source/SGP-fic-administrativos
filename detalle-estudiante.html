@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Expediente Estudiante</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-md-2 sidebar">
+
+    <div class="text-center mt-3">
+
+        <img
+            src="assets/logo-unicauca.png"
+            alt="Universidad del Cauca"
+            class="logo-unicauca">
+
+        <h5 class="text-white mt-2">
+            SGP
+        </h5>
+
+        <p class="text-white small">
+            Gestión de Pasantías
+        </p>
+
+        <p class="text-white small">
+            Ingeniería Civil
+        </p>
+
+        <p class="text-white small">
+            Universidad del Cauca
+        </p>
+
+    </div>
+
+    <hr>
+
+    <ul class="nav flex-column">
+
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">Dashboard</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="empresas.html">Empresas</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="convocatorias.html">Convocatorias</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link active" href="estudiantes.html">Estudiantes</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="docente.html">Docentes</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="reportes.html">Reportes</a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="col-md-10 p-4">
+
+<!-- Estudiante no encontrado -->
+
+<div id="noEncontrado" style="display:none;">
+
+    <h2>Estudiante no encontrado</h2>
+
+    <p>El estudiante que buscas no existe.</p>
+
+    <a href="estudiantes.html" class="btn btn-primary">Volver a Estudiantes</a>
+
+</div>
+
+<div id="contenido">
+
+<h2 id="tituloNombre"></h2>
+
+<p>
+Expediente del estudiante
+</p>
+
+<div class="card mb-3">
+
+<div class="card-header">
+
+Estado Actual
+
+</div>
+
+<div class="card-body">
+
+<span id="badgeEstado" class="badge bg-success"></span>
+
+</div>
+
+</div>
+
+<div class="card mb-3">
+
+<div class="card-header">
+
+Seguimiento del Proceso
+
+</div>
+
+<div class="card-body">
+
+<div class="row text-center" id="filaSeguimiento"></div>
+
+</div>
+
+</div>
+
+<div class="card mb-3">
+
+    <div class="card-header">
+
+        Información General
+
+    </div>
+
+    <div class="card-body">
+
+        <p><strong>Código:</strong> <span id="infoCodigo"></span></p>
+
+        <p><strong>Programa:</strong> <span id="infoPrograma"></span></p>
+
+        <p><strong>Empresa:</strong> <span id="infoEmpresa"></span></p>
+
+        <p><strong>Supervisor:</strong> <span id="infoSupervisor"></span></p>
+
+        <p><strong>Tutor Docente:</strong> <span id="infoTutor"></span></p>
+
+    </div>
+
+</div>
+
+<!-- Tutor Docente: la coordinación lo asigna o lo cambia (js/asignaciones.js) -->
+
+<div id="tarjetaDirector"></div>
+
+<div class="card mb-3">
+
+    <div class="card-header">
+
+        Fechas de la Práctica
+
+    </div>
+
+    <div class="card-body">
+
+        <p><strong>Inicio:</strong> <span id="infoInicio"></span></p>
+
+        <p><strong id="etiquetaFin">Finalización estimada:</strong> <span id="infoFin"></span></p>
+
+    </div>
+
+</div>
+
+<div class="card mb-3">
+
+    <div class="card-header">
+
+        Novedades
+
+    </div>
+
+    <div class="card-body" id="cuerpoNovedades"></div>
+
+</div>
+
+<div class="card mb-3">
+
+    <div class="card-header">
+
+        Historial del Estudiante
+
+    </div>
+
+    <div class="card-body" id="cuerpoHistorial"></div>
+
+</div>
+
+<div class="mt-3">
+
+    <a href="estudiantes.html" class="btn btn-outline-secondary">
+        Volver a Estudiantes
+    </a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="js/datos.js"></script>
+<script src="js/asignaciones.js"></script>
+
+<script>
+
+// Si js/datos.js no está en la carpeta js, se avisa en pantalla en vez de quedar vacío
+if (typeof ESTUDIANTES === "undefined") {
+    document.getElementById("contenido").style.display = "none";
+    document.getElementById("noEncontrado").style.display = "";
+    document.querySelector("#noEncontrado h2").textContent = "No se pudieron cargar los datos";
+    document.querySelector("#noEncontrado p").textContent = "Verifica que el archivo js/datos.js exista dentro de la carpeta js.";
+    throw new Error("js/datos.js no se cargó");
+}
+
+// Si js/asignaciones.js falta, la página sigue funcionando con los datos de js/datos.js
+const ASIG = window.Asignaciones || {
+    docenteIdDe: function(e){ return e.docenteId || null; },
+    historialDe: function(){ return []; },
+    montar: function(){}
+};
+
+const ETAPAS = [
+    "Carta Presentación",
+    "Empresa Asignada",
+    "ARL",
+    "Resolución",
+    "Informe Final",
+    "Certificación"
+];
+
+const params = new URLSearchParams(window.location.search);
+
+// Sin ?codigo= se muestra el primer estudiante, como antes
+const estudiante = buscarEstudiante(params.get("codigo") || ESTUDIANTES[0].codigo);
+
+function agregarParrafo(contenedor, texto, claseExtra){
+    const p = document.createElement("p");
+    p.textContent = texto;
+    if (claseExtra) p.className = claseExtra;
+    contenedor.appendChild(p);
+}
+
+if (!estudiante) {
+
+    document.getElementById("contenido").style.display = "none";
+    document.getElementById("noEncontrado").style.display = "";
+
+} else {
+
+    document.title = "Expediente Estudiante - " + estudiante.nombre;
+
+    document.getElementById("tituloNombre").textContent = estudiante.nombre;
+
+    const badge = document.getElementById("badgeEstado");
+    badge.textContent = estudiante.estado;
+    badge.className   = CLASE_ESTADO_ESTUDIANTE[estudiante.estado] || "badge bg-secondary";
+
+    // Seguimiento
+    const fila = document.getElementById("filaSeguimiento");
+
+    ETAPAS.forEach(function(etapa, i){
+        const col = document.createElement("div");
+        col.className = "col";
+        col.appendChild(document.createTextNode(estudiante.pasos[i]));
+        col.appendChild(document.createElement("br"));
+        col.appendChild(document.createTextNode(etapa));
+        fila.appendChild(col);
+    });
+
+    // Información general
+    document.getElementById("infoCodigo").textContent     = estudiante.codigo;
+    document.getElementById("infoPrograma").textContent   = estudiante.programa;
+    document.getElementById("infoEmpresa").textContent    = estudiante.empresa;
+    document.getElementById("infoSupervisor").textContent = estudiante.supervisor;
+
+    // Tutor docente: lleva al expediente del docente
+    const infoTutor = document.getElementById("infoTutor");
+    const idDirector = ASIG.docenteIdDe(estudiante);
+    const tutor = idDirector ? buscarDocente(idDirector) : null;
+
+    if (tutor) {
+        const enlace = document.createElement("a");
+        enlace.href = "detalle-docente.html?id=" + encodeURIComponent(tutor.id);
+        enlace.textContent = tutor.nombre;
+        infoTutor.appendChild(enlace);
+    } else {
+        infoTutor.textContent = "Sin asignar";
+    }
+
+    // Tarjeta para asignar o cambiar el tutor
+    ASIG.montar(estudiante);
+
+    // Fechas
+    document.getElementById("infoInicio").textContent = estudiante.inicio;
+    document.getElementById("infoFin").textContent    = estudiante.fin;
+
+    if (estudiante.estado === "Finalizado") {
+        document.getElementById("etiquetaFin").textContent = "Finalización:";
+    }
+
+    // Novedades
+    const cuerpoNovedades = document.getElementById("cuerpoNovedades");
+
+    if (estudiante.novedades.length === 0) {
+        agregarParrafo(cuerpoNovedades, "No existen novedades registradas.", "mb-0 text-muted");
+    } else {
+        estudiante.novedades.forEach(function(nov){
+            agregarParrafo(cuerpoNovedades, nov);
+        });
+    }
+
+    // Historial (el de js/datos.js y, después, las asignaciones de tutor)
+    const cuerpoHistorial = document.getElementById("cuerpoHistorial");
+
+    estudiante.historial.concat(ASIG.historialDe(estudiante)).forEach(function(linea){
+        agregarParrafo(cuerpoHistorial, linea);
+    });
+}
+
+</script>
+
+</body>
+
+</html>

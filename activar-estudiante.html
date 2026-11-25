@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Activar cuenta - SGP</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+
+        body{
+            margin:0;
+            padding:30px 15px;
+            min-height:100vh;
+
+            background: linear-gradient(
+                135deg,
+                #003b8e,
+                #004ea8,
+                #0066cc
+            );
+
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
+        }
+
+        .activar-container{
+            width:100%;
+            max-width:620px;
+            background:white;
+            border-radius:20px;
+            padding:36px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .logo-login{
+            width:130px;
+            margin-bottom:12px;
+        }
+
+        .titulo-sistema{
+            color:#001a82;
+            font-weight:bold;
+        }
+
+        .btn-activar{
+            background:#001a82;
+            border:none;
+        }
+
+        .btn-activar:hover{
+            background:#1738b8;
+        }
+
+        .footer-login{
+            margin-top:22px;
+            font-size:13px;
+            color:#666;
+            text-align:center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="activar-container">
+
+    <div class="text-center">
+
+        <img
+            src="assets/logo-unicauca.png"
+            alt="Universidad del Cauca"
+            class="logo-login">
+
+        <h3 class="titulo-sistema">Activación de cuenta</h3>
+
+        <p class="mb-2">Sistema de Gestión de Pasantías</p>
+
+    </div>
+
+    <hr>
+
+    <!-- Enlace no válido, vencido o ya usado -->
+
+    <div id="vistaInvalida" style="display:none;" class="text-center">
+        <h5 class="text-danger" id="tituloInvalida">Enlace no válido</h5>
+        <p id="textoInvalida" class="text-muted"></p>
+        <p class="small text-muted">
+            Escriba a <strong>pasantiasfic@unicauca.edu.co</strong> (asunto: DUDAS PASANTÍA) para solicitar un enlace nuevo.
+        </p>
+    </div>
+
+    <!-- Formulario -->
+
+    <div id="vistaFormulario" style="display:none;">
+
+        <p class="text-muted small" id="avisoPlazo"></p>
+
+        <div class="alert alert-danger py-2" id="errorFormulario" style="display:none;"></div>
+
+        <form id="formActivar" novalidate>
+
+            <div class="row g-3">
+
+                <div class="col-12">
+                    <label class="form-label" for="nombre">Nombre completo *</label>
+                    <input type="text" class="form-control" id="nombre">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="correo">Correo institucional</label>
+                    <input type="email" class="form-control" id="correo" readonly>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="codigo">Código estudiantil *</label>
+                    <input type="text" class="form-control" id="codigo" inputmode="numeric" placeholder="Ej: 10456789">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="programa">Programa *</label>
+                    <select class="form-select" id="programa">
+                        <option value="">Seleccione...</option>
+                        <option>Ingeniería Civil</option>
+                        <option>Ingeniería Ambiental</option>
+                        <option>Arquitectura</option>
+                        <option>Geotecnología</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="telefono">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefono" placeholder="Opcional">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="clave">Contraseña *</label>
+                    <input type="password" class="form-control" id="clave" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="clave2">Confirmar contraseña *</label>
+                    <input type="password" class="form-control" id="clave2" autocomplete="new-password">
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+
+                <p class="mb-2"><strong>Requisitos previos</strong></p>
+
+                <p class="small text-muted" id="avisoRequisitos">
+                    Seleccione su programa para ver los requisitos.
+                </p>
+
+                <div id="listaRequisitos"></div>
+
+            </div>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-activar">
+                    Activar cuenta
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Éxito -->
+
+    <div id="vistaExito" style="display:none;">
+
+        <div class="alert alert-success">
+            ✅ Su cuenta fue activada. Ya figura como estudiante buscando práctica.
+        </div>
+
+        <p class="mb-2"><strong>Siguientes pasos</strong></p>
+
+        <ol>
+            <li class="mb-2">
+                Solicite la <strong>Carta de Presentación</strong> a la Decanatura FIC con su correo institucional.
+                Tiene vigencia de dos (2) meses desde su expedición.
+                <div class="mt-2" id="contenedorCarta"></div>
+            </li>
+            <li class="mb-2">
+                Entréguela a la empresa y pida la <strong>Carta de Aceptación</strong>. La empresa tiene un (1) mes
+                si es privada y dos (2) meses si es pública.
+            </li>
+            <li>
+                Notifique la carta de aceptación a la Coordinación de su programa, con copia a
+                pasantiasfic@unicauca.edu.co.
+            </li>
+        </ol>
+
+        <p class="small text-muted mb-0">
+            La pasantía solo cuenta desde la resolución de aprobación del Consejo de Facultad.
+        </p>
+
+    </div>
+
+    <div class="footer-login">
+        Universidad del Cauca<br>
+        Facultad de Ingeniería Civil
+    </div>
+
+</div>
+
+<script>
+
+// Formulario de la Decanatura para pedir la Carta de Presentación.
+// Déjelo vacío ("") para ocultar el botón.
+const URL_CARTA_PRESENTACION = "https://docs.google.com/forms/d/e/1FAIpQLSc_IDKJqQMUH2P8qiLMcF3Nu8_oL-Xq_ID0hUrVbBPBkSTHQ/viewform?usp=dialog";
+
+const CLAVE_INVITACIONES = "invitaciones_estudiantes";
+const CLAVE_REGISTROS    = "registros_estudiantes";
+
+function $(id){
+    return document.getElementById(id);
+}
+
+function pad(n){
+    return String(n).padStart(2, "0");
+}
+
+function hoyISO(){
+    const d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+}
+
+function textoFecha(iso){
+    const p = iso.split("-");
+    return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]))
+        .toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function leerLista(clave){
+    try {
+        const lista = JSON.parse(localStorage.getItem(clave));
+        return Array.isArray(lista) ? lista : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function guardarLista(clave, lista){
+    try {
+        localStorage.setItem(clave, JSON.stringify(lista));
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function mostrarVista(nombre){
+    ["vistaInvalida", "vistaFormulario", "vistaExito"].forEach(function(id){
+        $(id).style.display = (id === nombre) ? "block" : "none";
+    });
+}
+
+function enlaceInvalido(titulo, texto){
+    $("tituloInvalida").textContent = titulo;
+    $("textoInvalida").textContent = texto;
+    mostrarVista("vistaInvalida");
+}
+
+// Requisitos del resumen operativo, según el programa
+function requisitosDe(programa){
+
+    const lista = [
+        "Estoy matriculado/a en mi programa de pregrado en SIMCA.",
+        "Tengo aprobado el " + (programa === "Geotecnología" ? "70" : "80") +
+        "% de los créditos de mi programa."
+    ];
+
+    if (programa !== "Geotecnología") {
+        lista.push("Tengo matriculado Trabajo de Grado en SIMCA (lo necesito para elaborar el Plan de Trabajo).");
+    }
+
+    if (programa === "Arquitectura") {
+        lista.push("Mi promedio de carrera es mayor o igual a 4.0.");
+    }
+
+    return lista;
+}
+
+function dibujarRequisitos(){
+
+    const programa = $("programa").value;
+    const cont = $("listaRequisitos");
+
+    cont.innerHTML = "";
+
+    if (!programa) {
+        $("avisoRequisitos").style.display = "block";
+        return;
+    }
+
+    $("avisoRequisitos").style.display = "none";
+
+    requisitosDe(programa).forEach(function(texto, i){
+
+        const bloque = document.createElement("div");
+        bloque.className = "form-check mb-2";
+
+        const casilla = document.createElement("input");
+        casilla.type = "checkbox";
+        casilla.className = "form-check-input requisito";
+        casilla.id = "req" + i;
+
+        const etiqueta = document.createElement("label");
+        etiqueta.className = "form-check-label";
+        etiqueta.htmlFor = casilla.id;
+        etiqueta.textContent = texto;
+
+        bloque.appendChild(casilla);
+        bloque.appendChild(etiqueta);
+        cont.appendChild(bloque);
+    });
+}
+
+function mostrarError(texto){
+    $("errorFormulario").textContent = texto;
+    $("errorFormulario").style.display = texto ? "block" : "none";
+    if (texto) $("errorFormulario").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function validar(){
+
+    if ($("nombre").value.trim().length < 5) return "Escriba su nombre completo.";
+    if (!/^\d{6,12}$/.test($("codigo").value.trim())) return "El código estudiantil debe tener solo números (entre 6 y 12 dígitos).";
+    if (!$("programa").value) return "Seleccione su programa.";
+
+    const tel = $("telefono").value.trim();
+    if (tel && !/^[\d\s+()-]{7,15}$/.test(tel)) return "El teléfono no tiene un formato válido.";
+
+    if ($("clave").value.length < 8) return "La contraseña debe tener mínimo 8 caracteres.";
+    if ($("clave").value !== $("clave2").value) return "Las contraseñas no coinciden.";
+
+    const casillas = document.querySelectorAll(".requisito");
+    for (let i = 0; i < casillas.length; i++) {
+        if (!casillas[i].checked) return "Debe confirmar que cumple todos los requisitos previos.";
+    }
+
+    return "";
+}
+
+// ---------------------------------------------------------------
+// Al abrir el enlace: ?token=...&correo=...&nombre=...&plazo=...
+// ---------------------------------------------------------------
+
+const params = new URLSearchParams(window.location.search);
+const token  = params.get("token");
+const correo = params.get("correo");
+
+(function iniciar(){
+
+    if (!token || !correo) {
+        enlaceInvalido("Enlace no válido", "El enlace está incompleto. Use el enlace completo que recibió por correo.");
+        return;
+    }
+
+    // Ya se usó este enlace
+    const yaRegistrado = leerLista(CLAVE_REGISTROS).some(function(r){
+        return r.token === token;
+    });
+
+    if (yaRegistrado) {
+        enlaceInvalido("Enlace ya utilizado", "Este enlace ya se usó para activar una cuenta.");
+        return;
+    }
+
+    // Plazo: se verifica con la invitación guardada en este navegador.
+    // Con un servidor real, esta comprobación se haría allá.
+    const invitacion = leerLista(CLAVE_INVITACIONES).find(function(i){
+        return i.token === token;
+    });
+
+    if (invitacion && invitacion.plazo && invitacion.plazo < hoyISO()) {
+        enlaceInvalido("Enlace vencido", "El plazo para activar la cuenta terminó el " + textoFecha(invitacion.plazo) + ".");
+        return;
+    }
+
+    $("correo").value = correo;
+    $("nombre").value = params.get("nombre") || "";
+
+    const plazoTxt = params.get("plazo");
+    $("avisoPlazo").textContent = plazoTxt
+        ? "Complete sus datos antes del " + plazoTxt + "."
+        : "Complete sus datos para activar su cuenta.";
+
+    mostrarVista("vistaFormulario");
+})();
+
+$("programa").addEventListener("change", dibujarRequisitos);
+
+$("formActivar").addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const error = validar();
+    mostrarError(error);
+    if (error) return;
+
+    // La contraseña NO se guarda: con un servidor real la recibiría el backend.
+    const registros = leerLista(CLAVE_REGISTROS);
+
+    registros.push({
+        token: token,
+        estudiante: {
+            nombre: $("nombre").value.trim(),
+            correo: $("correo").value,
+            codigo: $("codigo").value.trim(),
+            programa: $("programa").value,
+            telefono: $("telefono").value.trim()
+        },
+        fecha: new Date().toISOString()
+    });
+
+    if (!guardarLista(CLAVE_REGISTROS, registros)) {
+        mostrarError("No se pudo guardar el registro en este navegador.");
+        return;
+    }
+
+    // Marca la invitación como activada
+    const invitaciones = leerLista(CLAVE_INVITACIONES);
+    invitaciones.forEach(function(i){
+        if (i.token === token) i.estado = "Activada";
+    });
+    guardarLista(CLAVE_INVITACIONES, invitaciones);
+
+    if (URL_CARTA_PRESENTACION) {
+        const boton = document.createElement("a");
+        boton.href = URL_CARTA_PRESENTACION;
+        boton.target = "_blank";
+        boton.rel = "noopener";
+        boton.className = "btn btn-outline-primary btn-sm";
+        boton.textContent = "Abrir formulario de Carta de Presentación";
+        $("contenedorCarta").appendChild(boton);
+    }
+
+    mostrarVista("vistaExito");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+</script>
+
+</body>
+
+</html>

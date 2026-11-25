@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reportes</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+
+        .kpi-icono{
+            width:46px;
+            height:46px;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:22px;
+            background:#e8ecff;
+        }
+
+        .kpi-valor{
+            font-size:2.2rem;
+            font-weight:700;
+            line-height:1;
+            color:#001a82;
+        }
+
+        .grafico{
+            position:relative;
+            height:260px;
+        }
+
+        .progress{
+            height:8px;
+        }
+
+        .progress-bar{
+            background-color:#001a82;
+        }
+
+        @media print{
+            .sidebar, .d-print-none{ display:none !important; }
+            .col-md-10{ width:100% !important; flex:0 0 100% !important; }
+            .card{ break-inside:avoid; }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- SIDEBAR -->
+
+    <div class="col-md-2 sidebar">
+
+        <div class="text-center mt-3">
+
+            <img
+                src="assets/logo-unicauca.png"
+                alt="Universidad del Cauca"
+                class="logo-unicauca">
+
+            <h5 class="text-white mt-2">SGP</h5>
+
+            <p class="text-white small">Gestión de Pasantías</p>
+
+            <p class="text-white small">Ingeniería Civil</p>
+
+            <p class="text-white small">Universidad del Cauca</p>
+
+        </div>
+
+        <hr>
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="empresas.html">Empresas</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="convocatorias.html">Convocatorias</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="estudiantes.html">Estudiantes</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="docente.html">
+                        Docentes
+                    </a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="reportes.html">Reportes</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- CONTENIDO -->
+
+    <div class="col-md-10 p-4">
+
+        <div class="usuario-bar d-print-none">
+
+            <div class="usuario-info">
+                <strong>Usuario:</strong>
+                Sebastián Castillo
+            </div>
+
+            <a href="login.html" class="btn-cerrar">
+                Cerrar Sesión
+            </a>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+            <div>
+                <h2>Reportes y Estadísticas</h2>
+                <p>Información consolidada de las prácticas profesionales.</p>
+            </div>
+
+            <button type="button" class="btn btn-outline-secondary d-print-none" onclick="window.print()">
+                🖨️ Imprimir reporte
+            </button>
+
+        </div>
+
+        <!-- INDICADORES -->
+
+        <div class="row mt-2 g-3">
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card indicador h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="kpi-icono">🏢</div>
+                        <div>
+                            <div class="text-muted small">Empresas registradas</div>
+                            <div class="kpi-valor">18</div>
+                            <div class="small text-success">11 aprobadas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card indicador h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="kpi-icono">🎓</div>
+                        <div>
+                            <div class="text-muted small">Estudiantes activos</div>
+                            <div class="kpi-valor">32</div>
+                            <div class="small text-muted">18 en práctica</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card indicador h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="kpi-icono">📋</div>
+                        <div>
+                            <div class="text-muted small">Convocatorias</div>
+                            <div class="kpi-valor">21</div>
+                            <div class="small text-muted">12 publicadas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card indicador h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="kpi-icono">✅</div>
+                        <div>
+                            <div class="text-muted small">Aprobación de empresas</div>
+                            <div class="kpi-valor">61%</div>
+                            <div class="small text-muted">11 de 18 solicitudes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- GRAFICOS: ESTADOS -->
+
+        <div class="row mt-1 g-3">
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header">Empresas por estado</div>
+                    <div class="card-body">
+                        <div class="grafico"><canvas id="graficoEmpresas"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header">Convocatorias por estado</div>
+                    <div class="card-body">
+                        <div class="grafico"><canvas id="graficoConvocatorias"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header">Estudiantes por estado</div>
+                    <div class="card-body">
+                        <div class="grafico"><canvas id="graficoEstudiantes"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TENDENCIA Y ALERTAS -->
+
+        <div class="row mt-1 g-3">
+
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-header">Solicitudes de práctica por mes</div>
+                    <div class="card-body">
+                        <div class="grafico"><canvas id="graficoMensual"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header">Plazos por vencer</div>
+                    <div class="card-body">
+
+                        <div class="list-group list-group-flush">
+
+                            <a href="detalle-empresa.html?id=2" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>Vías del Cauca</strong>
+                                    <span class="badge bg-danger">5 días</span>
+                                </div>
+                                <div class="small text-muted">Corrección de documentos pendiente</div>
+                            </a>
+
+                            <a href="detalle-empresa.html?id=1" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>Constructora Andina</strong>
+                                    <span class="badge bg-warning text-dark">8 días</span>
+                                </div>
+                                <div class="small text-muted">Revisión pendiente: falta certificado SST</div>
+                            </a>
+
+                            <a href="detalle-convocatoria.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>Auxiliar Residente de Obra</strong>
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                </div>
+                                <div class="small text-muted">Convocatoria en revisión del coordinador</div>
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TABLA RESUMEN -->
+
+        <div class="card mt-3">
+
+            <div class="card-header">Resumen por empresa</div>
+
+            <div class="card-body">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Estado</th>
+                            <th class="text-center">Convocatorias</th>
+                            <th class="text-center">Cupos</th>
+                            <th class="text-center">Asignados</th>
+                            <th style="min-width:160px;">Ocupación de cupos</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaResumen"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <p class="text-muted small mt-3">
+            Datos de ejemplo · Actualizado el 16/11/2026
+        </p>
+
+    </div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+
+const COLOR = {
+    pendiente: "#ffc107",
+    correccion: "#dc3545",
+    verde: "#198754",
+    gris: "#6c757d",
+    azul: "#001a82"
+};
+
+// Ajustes comunes a las gráficas de dona
+function opcionesDona(){
+    return {
+        maintainAspectRatio: false,
+        cutout: "62%",
+        plugins: { legend: { position: "bottom" } }
+    };
+}
+
+// Empresas por estado
+new Chart(document.getElementById("graficoEmpresas"), {
+    type: "doughnut",
+    data: {
+        labels: ["Pendientes", "Corrección", "Aprobadas", "Rechazadas"],
+        datasets: [{
+            data: [4, 2, 11, 1],
+            backgroundColor: [COLOR.pendiente, COLOR.correccion, COLOR.verde, COLOR.gris],
+            borderWidth: 0
+        }]
+    },
+    options: opcionesDona()
+});
+
+// Convocatorias por estado
+new Chart(document.getElementById("graficoConvocatorias"), {
+    type: "bar",
+    data: {
+        labels: ["Pendientes", "Corrección", "Publicadas", "Cerradas"],
+        datasets: [{
+            data: [4, 2, 12, 3],
+            backgroundColor: [COLOR.pendiente, COLOR.correccion, COLOR.verde, COLOR.gris],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+});
+
+// Estudiantes por estado
+new Chart(document.getElementById("graficoEstudiantes"), {
+    type: "doughnut",
+    data: {
+        labels: ["Buscando práctica", "En práctica", "Finalizados"],
+        datasets: [{
+            data: [9, 18, 5],
+            backgroundColor: [COLOR.pendiente, COLOR.verde, COLOR.gris],
+            borderWidth: 0
+        }]
+    },
+    options: opcionesDona()
+});
+
+// Solicitudes de práctica por mes
+new Chart(document.getElementById("graficoMensual"), {
+    type: "line",
+    data: {
+        labels: ["Jun", "Jul", "Ago", "Sep", "Oct", "Nov"],
+        datasets: [{
+            label: "Solicitudes",
+            data: [3, 4, 6, 8, 7, 4],
+            borderColor: COLOR.azul,
+            backgroundColor: "rgba(0, 26, 130, 0.12)",
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+});
+
+// Resumen por empresa (la ocupación se calcula sola)
+const BADGE_ESTADO = {
+    "Pendiente": "bg-warning text-dark",
+    "Corrección": "bg-danger",
+    "Aprobada": "bg-success",
+    "Rechazada": "bg-secondary"
+};
+
+const RESUMEN = [
+    { id: 1, nombre: "Constructora Andina",       estado: "Pendiente",  convocatorias: 1, cupos: 3, asignados: 1 },
+    { id: 2, nombre: "Vías del Cauca",            estado: "Corrección", convocatorias: 1, cupos: 2, asignados: 0 },
+    { id: 3, nombre: "Ingeniería y Obras del Sur", estado: "Aprobada",  convocatorias: 2, cupos: 5, asignados: 2 }
+];
+
+document.getElementById("tablaResumen").innerHTML = RESUMEN.map(function(e){
+
+    const porcentaje = e.cupos > 0 ? Math.round(e.asignados / e.cupos * 100) : 0;
+
+    return "<tr>" +
+        '<td><a href="detalle-empresa.html?id=' + e.id + '" class="text-decoration-none">' + e.nombre + "</a></td>" +
+        '<td><span class="badge ' + BADGE_ESTADO[e.estado] + '">' + e.estado + "</span></td>" +
+        '<td class="text-center">' + e.convocatorias + "</td>" +
+        '<td class="text-center">' + e.cupos + "</td>" +
+        '<td class="text-center">' + e.asignados + "</td>" +
+        "<td>" +
+            '<div class="d-flex align-items-center gap-2">' +
+                '<div class="progress flex-grow-1"><div class="progress-bar" style="width:' + porcentaje + '%"></div></div>' +
+                '<small class="text-muted">' + porcentaje + "%</small>" +
+            "</div>" +
+        "</td>" +
+    "</tr>";
+
+}).join("");
+
+</script>
+
+</body>
+
+</html>

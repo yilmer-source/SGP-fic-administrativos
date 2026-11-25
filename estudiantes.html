@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Estudiantes</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- Sidebar -->
+
+    <div class="col-md-2 sidebar">
+
+        <div class="text-center mt-3">
+
+            <img
+                src="assets/logo-unicauca.png"
+                alt="Universidad del Cauca"
+                class="logo-unicauca">
+
+            <h5 class="text-white mt-2">SGP</h5>
+
+            <p class="text-white small">Gestión de Pasantías</p>
+
+            <p class="text-white small">Ingeniería Civil</p>
+
+            <p class="text-white small">Universidad del Cauca</p>
+
+        </div>
+
+        <hr>
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="empresas.html">Empresas</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="convocatorias.html">Convocatorias</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="estudiantes.html">Estudiantes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="docente.html">Docentes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="reportes.html">Reportes</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Contenido -->
+
+    <div class="col-md-10 p-4">
+
+        <div class="usuario-bar">
+
+            <div class="usuario-info">
+                <strong>Usuario:</strong>
+                Sebastián Castillo
+            </div>
+
+            <a href="login.html" class="btn-cerrar">
+                Cerrar Sesión
+            </a>
+
+        </div>
+
+        <!-- Título + botón de invitación -->
+
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+            <div>
+                <h2>Gestión de Estudiantes</h2>
+                <p>Seguimiento de estudiantes activos.</p>
+            </div>
+
+            <button id="btnInvitarEstudiante" type="button" class="btn btn-primary">
+                Enviar enlace de activación
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-header">
+                Estudiantes Activos
+            </div>
+
+            <div class="card-body">
+
+                <!-- Pestañas: cada una filtra por estado -->
+
+                <ul class="nav nav-tabs mb-4" id="tabsEstado">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-estado="">Todos</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Buscando práctica">Buscando práctica</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="En práctica">En práctica</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-estado="Finalizado">Finalizados</a>
+                    </li>
+
+                </ul>
+
+                <!-- Filtros -->
+
+                <div class="row mb-3">
+
+                    <div class="col-md-5">
+                        <input
+                            type="text"
+                            id="buscadorEstudiantes"
+                            class="form-control"
+                            placeholder="Buscar por nombre, código o empresa...">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroEstado">
+                            <option value="">Todos los estados</option>
+                            <option value="Buscando práctica">Buscando práctica</option>
+                            <option value="En práctica">En práctica</option>
+                            <option value="Finalizado">Finalizado</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input
+                            type="date"
+                            id="filtroFecha"
+                            class="form-control"
+                            title="Fecha de solicitud">
+                    </div>
+
+                    <div class="col-md-2">
+                        <button
+                            type="button"
+                            id="btnLimpiar"
+                            class="btn btn-outline-secondary w-100">
+                            Limpiar
+                        </button>
+                    </div>
+
+                </div>
+
+                <p class="text-muted small mb-3" id="contador"></p>
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Programa</th>
+                            <th>Estado</th>
+                            <th>Empresa</th>
+                            <th>Solicitud</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaEstudiantes">
+
+                        <tr data-estado="En práctica" data-fecha="2026-08-15" data-codigo="10456789">
+                            <td>
+                                <span class="nombre-estudiante">Laura Mejía</span>
+                                <div class="small text-muted">Código 10456789</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-success">En práctica</span></td>
+                            <td class="empresa-estudiante">Constructora Andina</td>
+                            <td>15/08/2026</td>
+                            <td>
+                                <a href="detalle-estudiante.html?codigo=10456789" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                        <tr data-estado="Buscando práctica" data-fecha="2026-10-28" data-codigo="10478123">
+                            <td>
+                                <span class="nombre-estudiante">Andrés Peña</span>
+                                <div class="small text-muted">Código 10478123</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-warning text-dark">Buscando práctica</span></td>
+                            <td class="empresa-estudiante">No asignada</td>
+                            <td>28/10/2026</td>
+                            <td>
+                                <a href="detalle-estudiante.html?codigo=10478123" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                        <tr data-estado="Finalizado" data-fecha="2026-02-10" data-codigo="10412345">
+                            <td>
+                                <span class="nombre-estudiante">Camila Ortiz</span>
+                                <div class="small text-muted">Código 10412345</div>
+                            </td>
+                            <td>Ingeniería Civil</td>
+                            <td><span class="badge bg-secondary">Finalizado</span></td>
+                            <td class="empresa-estudiante">Ingeniería y Obras del Sur</td>
+                            <td>10/02/2026</td>
+                            <td>
+                                <a href="detalle-estudiante.html?codigo=10412345" class="btn btn-primary">Ver expediente</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <p class="text-center text-muted my-4" id="sinResultados" style="display:none;">
+                    No hay estudiantes que coincidan con los filtros.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+// ---------------------------------------------------------------
+// Estudiantes activados por enlace (simulación con localStorage)
+// Se agregan a la tabla como "Buscando práctica" ANTES de armar los
+// filtros, para que pestañas, buscador y contador las incluyan.
+// activar-estudiante.html los guarda en "registros_estudiantes".
+// ---------------------------------------------------------------
+
+function pad(n){
+    return String(n).padStart(2, "0");
+}
+
+function cargarEstudiantesActivados(){
+
+    const tbody = document.getElementById("tablaEstudiantes");
+    let registros = [];
+
+    try {
+        registros = JSON.parse(localStorage.getItem("registros_estudiantes")) || [];
+        if (!Array.isArray(registros)) registros = [];
+    } catch (e) {
+        registros = [];
+    }
+
+    registros.forEach(function(reg){
+
+        const est = (reg.estudiante && typeof reg.estudiante === "object") ? reg.estudiante : {};
+        const codigo = String(est.codigo || "");
+
+        if (!codigo) return;
+
+        // Si el código ya está en la tabla, no se repite
+        const repetido = Array.from(tbody.querySelectorAll("tr[data-codigo]")).some(function(f){
+            return f.dataset.codigo === codigo;
+        });
+        if (repetido) return;
+
+        let fecha = new Date(reg.fecha || Date.now());
+        if (isNaN(fecha.getTime())) fecha = new Date();
+
+        const fechaISO = fecha.getFullYear() + "-" + pad(fecha.getMonth() + 1) + "-" + pad(fecha.getDate());
+        const fechaTxt = pad(fecha.getDate()) + "/" + pad(fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
+        const tr = document.createElement("tr");
+        tr.dataset.estado = "Buscando práctica";
+        tr.dataset.fecha  = fechaISO;
+        tr.dataset.codigo = codigo;
+
+        // textContent evita inyectar HTML desde lo que escribió el estudiante
+        const tdNombre = document.createElement("td");
+        const spanNombre = document.createElement("span");
+        spanNombre.className = "nombre-estudiante";
+        spanNombre.textContent = est.nombre || "Estudiante sin nombre";
+        const divCodigo = document.createElement("div");
+        divCodigo.className = "small text-muted";
+        divCodigo.textContent = "Código " + codigo;
+        tdNombre.appendChild(spanNombre);
+        tdNombre.appendChild(divCodigo);
+
+        const tdPrograma = document.createElement("td");
+        tdPrograma.textContent = est.programa || "Ingeniería Civil";
+
+        const tdEstado = document.createElement("td");
+        const badge = document.createElement("span");
+        badge.className = "badge bg-warning text-dark";
+        badge.textContent = "Buscando práctica";
+        tdEstado.appendChild(badge);
+
+        const tdEmpresa = document.createElement("td");
+        tdEmpresa.className = "empresa-estudiante";
+        tdEmpresa.textContent = "No asignada";
+
+        const tdFecha = document.createElement("td");
+        tdFecha.textContent = fechaTxt;
+
+        const tdAccion = document.createElement("td");
+        const enlace = document.createElement("a");
+        enlace.href = "detalle-estudiante.html?codigo=" + encodeURIComponent(codigo);
+        enlace.className = "btn btn-primary";
+        enlace.textContent = "Ver expediente";
+        tdAccion.appendChild(enlace);
+
+        tr.appendChild(tdNombre);
+        tr.appendChild(tdPrograma);
+        tr.appendChild(tdEstado);
+        tr.appendChild(tdEmpresa);
+        tr.appendChild(tdFecha);
+        tr.appendChild(tdAccion);
+
+        // Los más recientes arriba
+        tbody.insertBefore(tr, tbody.firstChild);
+    });
+}
+
+cargarEstudiantesActivados();
+
+// ---------------------------------------------------------------
+// Pestañas, buscador y filtros
+// ---------------------------------------------------------------
+
+const buscador      = document.getElementById("buscadorEstudiantes");
+const selectEstado  = document.getElementById("filtroEstado");
+const inputFecha    = document.getElementById("filtroFecha");
+const btnLimpiar    = document.getElementById("btnLimpiar");
+const tabs          = document.querySelectorAll("#tabsEstado .nav-link");
+const filas         = document.querySelectorAll("#tablaEstudiantes tr[data-estado]");
+const sinResultados = document.getElementById("sinResultados");
+const contador      = document.getElementById("contador");
+
+// Minúsculas y sin tildes, para que "mejia" encuentre "Mejía"
+function normalizar(texto){
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+function marcarPestana(estado){
+    tabs.forEach(function(tab){
+        tab.classList.toggle("active", tab.dataset.estado === estado);
+    });
+}
+
+function filtrar(){
+
+    const texto  = normalizar(buscador.value);
+    const estado = selectEstado.value;
+    const fecha  = inputFecha.value;
+
+    let visibles = 0;
+
+    filas.forEach(function(fila){
+
+        const nombre  = normalizar(
+            fila.querySelector(".nombre-estudiante").textContent
+        );
+        const empresa = normalizar(
+            fila.querySelector(".empresa-estudiante").textContent
+        );
+        const codigo = fila.dataset.codigo;
+
+        const coincideTexto =
+            texto === "" ||
+            nombre.includes(texto) ||
+            empresa.includes(texto) ||
+            codigo.includes(texto);
+
+        const coincideEstado = estado === "" || fila.dataset.estado === estado;
+        const coincideFecha  = fecha === ""  || fila.dataset.fecha === fecha;
+
+        const mostrar = coincideTexto && coincideEstado && coincideFecha;
+
+        fila.style.display = mostrar ? "" : "none";
+
+        if (mostrar) visibles++;
+    });
+
+    sinResultados.style.display = visibles === 0 ? "block" : "none";
+    contador.textContent = "Mostrando " + visibles + " de " + filas.length + " estudiantes";
+}
+
+// Pestañas: cambian el estado y mantienen sincronizado el select
+tabs.forEach(function(tab){
+    tab.addEventListener("click", function(e){
+        e.preventDefault();
+        selectEstado.value = tab.dataset.estado;
+        marcarPestana(tab.dataset.estado);
+        filtrar();
+    });
+});
+
+// Select: cambia el estado y mantiene sincronizada la pestaña
+selectEstado.addEventListener("change", function(){
+    marcarPestana(selectEstado.value);
+    filtrar();
+});
+
+buscador.addEventListener("input", filtrar);
+inputFecha.addEventListener("change", filtrar);
+
+btnLimpiar.addEventListener("click", function(){
+    buscador.value = "";
+    selectEstado.value = "";
+    inputFecha.value = "";
+    marcarPestana("");
+    filtrar();
+});
+
+filtrar();
+
+</script>
+
+<!-- Botón "Enviar enlace de activación" -->
+<script src="js/enviar-enlace-estudiante.js"></script>
+
+</body>
+
+</html>
